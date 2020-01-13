@@ -2,9 +2,11 @@ import React, { useState, useReducer } from 'react';
 import { TextField, Button } from '@material-ui/core'
 
 const Landing = () => {
+  // Sets initial counts
   const [inputCount, setInputCount] = useState(2)
   const [currentCount, setCurrentCount] = useState(2)
 
+  // Sets initial inputs
   const initialInput = {
     input1: [
       <TextField label={1} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}/>, 
@@ -18,9 +20,10 @@ const Landing = () => {
     ]
   }
 
+  // Master input manipulation function
   function inputFunction(state, action) {
     switch (action.type) {
-      case 'add_input':
+      case 'add_input': // adds an input
         let count = inputCount+1;
         console.log(count)
         setInputCount(inputCount+1);
@@ -31,20 +34,20 @@ const Landing = () => {
           <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}>X</Button>,
           ''
         ]};
-      case 'delete_input':
+      case 'delete_input': // Removes and input
         delete state[action.payload]  
         setCurrentCount(currentCount-1)
         return state;
-      case 'edit_input':
+      case 'edit_input': // Edits the value of the input
         state[`input${action.payload.num}`][2] = action.payload.event;
         return state 
-      default:
+      default: 
         return state;
     }
   }
 
+  // Brings all the previous input functionality together
   const [inputs, setInputs] = useReducer(inputFunction, initialInput);
-  }
 
   // Logs the entries after entered.
   function submitForm(event){
