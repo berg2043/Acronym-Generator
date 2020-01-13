@@ -1,49 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { TextField, Button } from '@material-ui/core'
 
 const Landing = () => {
-  // Default input state
-  const [inputs, setInputs] = useState({
-    input1: [
-      <TextField label={1} onChange={(event)=>{changeInput(event,1)}}/>, 
-      <Button variant='contained' onClick={()=>deleteInput('input1')}>X</Button>,
-      ''
-    ],
-    input2: [
-      <TextField label={2} onChange={(event)=>{changeInput(event,2)}}/>, 
-      <Button variant='contained' onClick={()=>deleteInput('input2')}>X</Button>,
-      ''
-    ]
-  }) 
-
-  // Counts to increase the name and attempt to prevent less than 2
   const [inputCount, setInputCount] = useState(2)
   const [currentCount, setCurrentCount] = useState(2)
 
-  // Removes an input
-  function deleteInput(key){
-    delete inputs[key]  
-    setInputs(inputs);
-    setCurrentCount(currentCount-1)
-  }
-
-  // Adds an input
-  function addInput(){
-    let count = inputCount+1;
-    setInputCount(inputCount+1);
-    inputs[`input${count}`] = [
-      <TextField label={count} onChange={(event)=>{changeInput(event,count)}}/>,
-      <Button variant='contained' onClick={()=>deleteInput(`input${count}`)}>X</Button>,
+  const initialInput = {
+    input1: [
+      <TextField label={1} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}/>, 
+      <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}>X</Button>,
+      ''
+    ],
+    input2: [
+      <TextField label={2} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:2}})}}/>,
+      <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}>X</Button>,
       ''
     ]
-    setInputs(inputs);
-    setCurrentCount(currentCount+1);
   }
 
-  // Stores the text as individuals type
-  function changeInput(event, num){
-    inputs[`input${num}`][2] = event.target.value;
-    setInputs(inputs)
+  function inputFunction(state, action) {
+    switch (action.type) {
+      case 'add_input':
+        let count = inputCount+1;
+        console.log(count)
+        setInputCount(inputCount+1);
+        setCurrentCount(currentCount+1);
+        console.log('wuh')
+        return {...state,[`input${count}`]: [
+          <TextField label={count} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:count}})}}/>,
+          <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}>X</Button>,
+          ''
+        ]};
+      case 'delete_input':
+        delete state[action.payload]  
+        setCurrentCount(currentCount-1)
+        return state;
+      case 'edit_input':
+        state[`input${action.payload.num}`][2] = action.payload.event;
+        return state 
+      default:
+        return state;
+    }
+  }
+
+  const [inputs, setInputs] = useReducer(inputFunction, initialInput);
   }
 
   // Logs the entries after entered.
@@ -66,7 +66,7 @@ const Landing = () => {
             </span>
           )
         })}
-        <Button variant="contained" onClick={addInput}>+</Button>
+        <Button variant="contained" onClick={()=>setInputs({type: 'add_input'})}>+</Button>
         <br/>
         {Object.entries(inputs).map(([key,val])=>{
           return(
