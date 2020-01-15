@@ -1,10 +1,11 @@
 import React, { useState, useReducer } from 'react';
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core';
+import Axios from 'axios';
 
 const Landing = () => {
   // Sets initial counts
-  const [inputCount, setInputCount] = useState(2)
-  const [currentCount, setCurrentCount] = useState(2)
+  const [inputCount, setInputCount] = useState(2);
+  const [currentCount, setCurrentCount] = useState(2);
 
   // Sets initial inputs
   const initialInput = {
@@ -18,29 +19,27 @@ const Landing = () => {
       <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}>X</Button>,
       ''
     ]
-  }
+  };
 
   // Master input manipulation function
   function inputFunction(state, action) {
     switch (action.type) {
       case 'add_input': // adds an input
         let count = inputCount+1;
-        console.log(count)
         setInputCount(inputCount+1);
         setCurrentCount(currentCount+1);
-        console.log('wuh')
         return {...state,[`input${count}`]: [
           <TextField label={count} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:count}})}}/>,
           <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}>X</Button>,
           ''
         ]};
       case 'delete_input': // Removes and input
-        delete state[action.payload]  
-        setCurrentCount(currentCount-1)
+        delete state[action.payload]  ;
+        setCurrentCount(currentCount-1);
         return state;
       case 'edit_input': // Edits the value of the input
         state[`input${action.payload.num}`][2] = action.payload.event;
-        return state 
+        return state;
       default: 
         return state;
     }
@@ -49,14 +48,24 @@ const Landing = () => {
   // Brings all the previous input functionality together
   const [inputs, setInputs] = useReducer(inputFunction, initialInput);
 
-  // Logs the entries after entered.
+  // Sends the words in the inputs to the server to be stored in session
+  // Then calls server for accronyms and word lists
   function submitForm(event){
     event.preventDefault();
-    const arr = []
+    const arr = [];
     Object.entries(inputs).map(([key,val])=>{
       return arr.push(inputs[key][2])
     })
-    console.log(arr);
+    Axios.post('/api/words/', arr).then((response)=>{
+      // Will get tossed into a saga at some point
+      Axios.get('/api/words/').then(resp=>{
+        console.log(resp.data);
+      }).catch(err=>{
+        console.log(err)
+      });
+    }).catch(err=>{
+      console.log(err);
+    })
   }
 
   return(
@@ -67,7 +76,7 @@ const Landing = () => {
             <span key={key}>
               {val[0]}
             </span>
-          )
+          );
         })}
         <Button variant="contained" onClick={()=>setInputs({type: 'add_input'})}>+</Button>
         <br/>
@@ -76,13 +85,13 @@ const Landing = () => {
             <span key={key}>
               {val[1]}
             </span>
-          )
+          );
         })}
         <br/>
         {Object.entries(inputs).map(([key,val])=>{
           return(
             JSON.stringify(key)
-          )
+          );
         })}
         <br/>
         <Button
