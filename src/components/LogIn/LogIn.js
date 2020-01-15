@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const LogIn = () => {
+  const dispatch = useDispatch();
   // States
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,11 +13,16 @@ const LogIn = () => {
   // Adds histroy for progromatic routing
   const history = useHistory();
   
+  function login(event){
+    event.preventDefault();
+    dispatch({type: 'LOGIN', payload:{username, password}});
+  }
+
   return(
     <>
       <div>
         <h1>Log In</h1>
-        <form onSubmit={event=>event.preventDefault()}>
+        <form onSubmit={login}>
           <TextField
             label='Username'
             value={username}
