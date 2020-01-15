@@ -35,7 +35,12 @@ if(process.env.DATABASE_URL) {
 }
 
 // Pool using either default or Heroku settings
-const pool = new pg.Pool(conifg);
+const pool = new pg.Pool(config);
+
+// the pool will log when it connects to the database
+pool.on('connect', () => {
+  console.log('Postgesql connected');
+});
 
 // Error of idle clients
 pool.on('error', (err) => {
@@ -43,4 +48,4 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
-module.exports.pool;
+module.exports = pool;
