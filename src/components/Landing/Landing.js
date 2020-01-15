@@ -1,8 +1,13 @@
 import React, { useState, useReducer } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import Axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Landing = () => {
+  // Adds Redux
+  const dispatch = useDispatch();
+  const acronyms = useSelector(state => state.acronyms)
+
   // Sets initial counts
   const [inputCount, setInputCount] = useState(2);
   const [currentCount, setCurrentCount] = useState(2);
@@ -58,11 +63,7 @@ const Landing = () => {
     })
     Axios.post('/api/words/', arr).then((response)=>{
       // Will get tossed into a saga at some point
-      Axios.get('/api/words/').then(resp=>{
-        console.log(resp.data);
-      }).catch(err=>{
-        console.log(err)
-      });
+      dispatch({type: 'GET_ACRONYMS'})
     }).catch(err=>{
       console.log(err);
     })
@@ -100,6 +101,21 @@ const Landing = () => {
           Submit
         </Button>
       </form>
+      {acronyms.map(acronym=>{
+        return(
+          <div key={acronym[Object.keys(acronym)[0]].id}>
+            <p>{Object.keys(acronym)[0]}</p>
+            <ul>
+              {acronym[Object.keys(acronym)[0]].wordLists.map((list, i)=>{
+                return(
+                <li key={i}>{JSON.stringify(list)}</li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
+      {JSON.stringify(acronyms)}
     </>
   );
 };
