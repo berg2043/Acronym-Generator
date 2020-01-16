@@ -1,9 +1,23 @@
 import React, { useState, useReducer } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, makeStyles, List, ListSubheader } from '@material-ui/core';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import Acronym from '../Acronym/Acronym';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    margin: 'auto'
+  },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+}));
 
 const Landing = () => {
+  const classes = useStyles();
   // Adds Redux
   const dispatch = useDispatch();
   const acronyms = useSelector(state => state.acronyms)
@@ -101,21 +115,22 @@ const Landing = () => {
           Submit
         </Button>
       </form>
-      {acronyms.map(acronym=>{
-        return(
-          <div key={acronym[Object.keys(acronym)[0]].id}>
-            <p>{Object.keys(acronym)[0]}</p>
-            <ul>
-              {acronym[Object.keys(acronym)[0]].wordLists.map((list, i)=>{
-                return(
-                <li key={i}>{JSON.stringify(list)}</li>
-                )
-              })}
-            </ul>
-          </div>
-        )
-      })}
-      {JSON.stringify(acronyms)}
+      <List
+        component='nav'
+        subheader={
+          <ListSubheader component='div'>
+            Words in Order
+          </ListSubheader>
+        }
+        className={classes.root}
+      >
+        {acronyms.map(acronym=>{
+          return(
+            <Acronym acronym={acronym} key={acronym[Object.keys(acronym)[0]].id}/>
+          )
+        })}
+      </List>
+      {/* {JSON.stringify(acronyms)} */}
     </>
   );
 };
