@@ -24,7 +24,12 @@ const Acronym = (props) => {
   }
 
   function favoriteSingle(favoriteList, favoriteStatus){
-    const acronymAndList = {[Object.keys(props.acronym)[0]]: [favoriteList]}
+    const acronymAndList = {
+      [Object.keys(props.acronym)[0]]: {
+        id: props.acronym[Object.keys(props.acronym)[0]].id,
+        wordLists: [favoriteList]
+      }
+    }
     if(favoriteStatus){
       dispatch({type: 'REMOVE_FAVORITE', payload: acronymAndList})
     } else {
