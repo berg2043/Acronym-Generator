@@ -103,11 +103,6 @@ const Landing = () => {
           );
         })}
         <br/>
-        {Object.entries(inputs).map(([key,val])=>{
-          return(
-            JSON.stringify(key)
-          );
-        })}
         <br/>
         <Button
           type='submit'
@@ -130,7 +125,6 @@ const Landing = () => {
           )
         })}
       </List>
-      {/* {JSON.stringify(acronyms)} */}
     </>
   );
 };
