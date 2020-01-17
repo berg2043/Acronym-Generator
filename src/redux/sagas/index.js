@@ -3,6 +3,7 @@ import getAcronymsSaga from './getAcronymsSaga';
 import registerSaga from './registerSaga';
 import loginSaga from './loginSaga';
 import userSaga from './userSaga';
+import favoritesSaga from './favoritesSaga';
 
 export default function* rootSaga(){
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSaga(){
     registerSaga(),
     loginSaga(),
     userSaga(),
+    favoritesSaga(),
   ]);
 };
