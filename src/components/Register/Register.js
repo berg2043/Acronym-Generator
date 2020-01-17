@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import PasswordInput from '../PasswordInput/PasswordInput';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -10,10 +11,19 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const user = useSelector(state=>state.username);
+
   function registerUser(event){
     event.preventDefault();
     dispatch({type: 'REGISTER', payload: {username, password}});
   }
+  const history = useHistory();
+  useEffect(()=>{
+    console.log(user.id)
+    if(user.id){
+      history.push('/')
+    }
+  }, [user])
 
   return(
     <>
