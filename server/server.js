@@ -3,6 +3,7 @@ const sessionMiddleware = require('./modules/session');
 const passport = require('./strategies/userStrategy'); 
 const wordRouter = require('./routes/wordRouter');
 const userRouter = require('./routes/userRouter');
+const favoritesRouter = require('./routes/favoritesRouter');
 require('dotenv').config();
 
 // Globals
@@ -21,6 +22,7 @@ app.use(passport.session());
 // Routes
 app.use('/api/words', wordRouter);
 app.use('/api/user', userRouter);
+app.use('/api/favorites', favoritesRouter)
 
 // Static
 app.use(express.static('build'));
