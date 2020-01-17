@@ -1,9 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 const Nav = () =>{
-  const username = useSelector(state=>state.username.username);
+  const user = useSelector(state=>state.username);
+  const dispatch = useDispatch();
+  
   const history = useHistory();
   return(
     <nav>
@@ -28,8 +30,9 @@ const Nav = () =>{
         }
       }
       >
-        Favorites
+        {user.id? 'Favorites':'Login'}
       </a>
+      {user.id? <button onClick={() => dispatch({ type: 'LOGOUT' })}>Log Out</button>: null}
     </nav>
   );
 };

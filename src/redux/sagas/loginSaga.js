@@ -21,6 +21,7 @@ function* logout(action){
       withCredentials: true,
     };
     yield Axios.post('/api/user/logout', config);
+    yield put({type: 'REMOVE_USER'})
   } catch (error) {
     console.log('error loggin out', error);
   }
