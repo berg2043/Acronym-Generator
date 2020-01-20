@@ -61,17 +61,6 @@ const Acronym = (props) => {
     }
   }
 
-  function loginTest(){
-    if(user.id){
-
-    }
-  }
-
-  function counting(increment){
-    console.log(count, increment)
-    setCount(count + increment);
-  }
-
   return (
     <>
       <ListItem>
@@ -82,18 +71,15 @@ const Acronym = (props) => {
         <IconButton onClick={favoriteAll}>
           {all ? <Favorite /> :<FavoriteBorder />}
         </IconButton>
-        {
-          open ?
-            <IconButton onClick={handleClick}><ExpandLess /></IconButton> :
-            <IconButton onClick={handleClick}><ExpandMore /></IconButton>
-        }
+        <IconButton onClick={handleClick}>
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </IconButton>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           {props.acronym[Object.keys(props.acronym)[0]].wordLists.map((list, i) => {
             return (
               <WordList
-                counting={counting}
                 favoriteSingle={favoriteSingle} 
                 all={all} 
                 list={list} 
