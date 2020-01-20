@@ -32,6 +32,21 @@ const Nav = () =>{
       >
         {user.id? 'Favorites':'Login'}
       </a>
+      {
+        user.admin?
+          <a
+            href='/admin'
+            onClick={
+              event=>{
+                event.preventDefault();
+                history.push('/admin');
+              }
+            }
+          >
+            Admin
+          </a>:
+          ''
+      }
       {user.id? <button onClick={() => dispatch({ type: 'LOGOUT' })}>Log Out</button>: null}
     </nav>
   );
