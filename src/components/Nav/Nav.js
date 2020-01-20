@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Typography, makeStyles, Button, Chip, Avatar } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Menu, MenuItem, makeStyles, Button, Chip, Avatar } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import FaceRounded from '@material-ui/icons/Face';
 
@@ -112,9 +112,9 @@ const Nav = () =>{
                 />
                 <Menu
                   anchorEl={anchorE2}
-                  anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                  anchorOrigin={{vertical: 'top', horizontal: 'left'}}
                   keepMounted
-                  transformOrigin={{vertical: 'bottom', horizontal: 'left'}}
+                  transformOrigin={{vertical: 'top', horizontal: 'left'}}
                   open={Boolean(anchorE2)}
                   onClose={(event)=>handleClose(event)}
                 >
