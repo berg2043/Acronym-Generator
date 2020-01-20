@@ -4,6 +4,7 @@ const passport = require('./strategies/userStrategy');
 const wordRouter = require('./routes/wordRouter');
 const userRouter = require('./routes/userRouter');
 const favoritesRouter = require('./routes/favoritesRouter');
+const adminRouter = require('./routes/adminRouter');
 require('dotenv').config();
 
 // Globals
@@ -22,7 +23,8 @@ app.use(passport.session());
 // Routes
 app.use('/api/words', wordRouter);
 app.use('/api/user', userRouter);
-app.use('/api/favorites', favoritesRouter)
+app.use('/api/favorites', favoritesRouter);
+app.use('/api/admin', adminRouter);
 
 // Static
 app.use(express.static('build'));
@@ -30,4 +32,4 @@ app.use(express.static('build'));
 // Spin Up
 app.listen(PORT, () => {
   console.log('Server running on', PORT);
-})
+});
