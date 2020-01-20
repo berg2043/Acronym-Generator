@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Table, TableHead, TableRow, TableCell, makeStyles, TableBody } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
 import Axios from 'axios';
 import AdminRow from '../AdminRow/AdminRow';
 

@@ -23,7 +23,7 @@ const Register = () => {
     if(user.id){
       history.push('/')
     }
-  }, [user])
+  }, [user, history])
 
   return(
     <>

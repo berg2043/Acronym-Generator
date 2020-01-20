@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Table, TableHead, TableRow, TableCell, makeStyles, TableBody } from '@material-ui/core';
-import Axios from 'axios';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { TableRow, TableCell, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme=>({
   pseudolink: {

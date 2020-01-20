@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, List, ListItem, ListItemText, Collapse, IconButton, Button, TextField } from '@material-ui/core';
-import { ExpandLess, ExpandMore, Favorite, FavoriteBorder } from '@material-ui/icons/';
-import WordList from '../WordList/WordlList';
+import { makeStyles, List, ListItem, ListItemText, Button, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
@@ -26,6 +24,7 @@ const FavoriteAcronym = (props) => {
     const holder={}
     props.favorite.word_list.map((word, i)=>{
       holder[i] = word
+      return null;
     })
     setWords(holder)
   }, [props.favorite.word_list])
