@@ -4,6 +4,8 @@ import registerSaga from './registerSaga';
 import loginSaga from './loginSaga';
 import userSaga from './userSaga';
 import favoritesSaga from './favoritesSaga';
+import flagWordSaga from './flagWordSaga'
+import wordsSaga from './wordsSaga'
 
 export default function* rootSaga(){
   yield all([
@@ -12,5 +14,7 @@ export default function* rootSaga(){
     loginSaga(),
     userSaga(),
     favoritesSaga(),
+    flagWordSaga(),
+    wordsSaga(),
   ]);
 };
