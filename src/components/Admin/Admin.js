@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Table, TableHead, TableRow, TableCell, makeStyles, TableBody } from '@material-ui/core';
 import Axios from 'axios';
-
-const useStyles = makeStyles(theme=>({
-  pseudolink: {
-    color: 'blue',
-    textDecoration: 'underline',
-    cursor: 'pointer'
-  }
-}))
+import AdminRow from '../AdminRow/AdminRow';
 
 const Admin = () => {
   const [removals, setRemovals] = useState([])
-  const classes = useStyles();
   const user = useSelector(state=>state.username);
 
   if(user.admin && removals.length === 0){
@@ -38,12 +30,7 @@ const Admin = () => {
         <TableBody>
           {removals.map(item=>{
             return(
-              <TableRow key={item.id}>
-                <TableCell>{item.word}</TableCell>
-                <TableCell>{item.length}</TableCell>
-                <TableCell><span className={classes.pseudolink}>Yes</span></TableCell>
-                <TableCell><span className={classes.pseudolink}>No</span></TableCell>
-              </TableRow>
+              <AdminRow setRemovals={setRemovals} item={item} key={item.id}/>
             )
           })}
         </TableBody>
