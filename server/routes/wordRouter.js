@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('./../modules/pool');
 const permute = require('./../modules/permutations');
 const axios = require('axios');
+const { rejectUnauthenticated } = require('../modules/authenticationMiddleware');
 require('dotenv').config();
 
 const router = express.Router();
@@ -47,4 +48,23 @@ router.get('/', (req, res)=>{
     console.log('err getting acronyms', err)
   })
 })
+
+// Deletes a word from the master word list
+router.delete('/:id', rejectUnauthenticated, async (req, res) => {
+  try {
+    const admin = await pool.query(`SELECT "admin" FROM "user" WHERE "id" = $1;`, [req.session.passport.user]);
+    if(admin.rows[0].admin){
+      // const queryText = `DELETE FROM "words" WHERE "id" = $1;`;
+      // await pool.query(queryText, [req.params.id]);
+      res.sendStatus(200);
+      console.log(req.params.id)
+    } else {
+      res.sendStatus(403);
+    }
+  } catch (error) {
+    res.sendStatus(500);
+    console.log(err);
+  };
+});
+
 module.exports = router;
