@@ -14,6 +14,18 @@ const useStyles = makeStyles(theme => ({
   nested: {
     paddingLeft: theme.spacing(4),
   },
+  inputs: {
+    margin: theme.spacing(1),
+    width: 200,
+  },
+  buttons: {
+    margin: theme.spacing(1),
+  },
+  inputBlock: {
+    display: 'inline-block',
+    width: 200, 
+    margin: theme.spacing(1),
+  }
 }));
 
 const Landing = () => {
@@ -23,19 +35,41 @@ const Landing = () => {
   const acronyms = useSelector(state => state.acronyms)
 
   // Sets initial counts
-  const [inputCount, setInputCount] = useState(2);
-  const [currentCount, setCurrentCount] = useState(2);
+  const [inputCount, setInputCount] = useState(1);
+  const [currentCount, setCurrentCount] = useState(1);
 
   // Sets initial inputs
   const initialInput = {
     input1: [
-      <TextField label={1} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}/>, 
-      <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}>X</Button>,
+      <TextField
+        label={1} 
+        onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}
+        className={classes.inputs}
+        variant='filled'
+      />, 
+      <Button 
+        variant='contained' 
+        onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}
+        className={classes.buttons}
+      >
+        X
+      </Button>,
       ''
     ],
     input2: [
-      <TextField label={2} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:2}})}}/>,
-      <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}>X</Button>,
+      <TextField 
+        label={2} 
+        onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:2}})}}
+        className={classes.inputs}
+        variant='filled'
+      />,
+      <Button 
+        variant='contained' 
+        onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}
+        className={classes.buttons}
+      >
+        X
+      </Button>,
       ''
     ]
   };
@@ -45,11 +79,26 @@ const Landing = () => {
     switch (action.type) {
       case 'add_input': // adds an input
         let count = inputCount+1;
-        setInputCount(inputCount+1);
-        setCurrentCount(currentCount+1);
         return {...state,[`input${count}`]: [
-          <TextField label={count} onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:count}})}}/>,
-          <Button variant='contained' onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}>X</Button>,
+          <TextField 
+            label={count} 
+            onChange={(event)=>{setInputs({
+              type: 'edit_input', 
+              payload:{
+                event: event.target.value, 
+                num:count
+              }
+            })}}
+            className={classes.inputs}
+            variant='filled'
+          />,
+          <Button 
+            variant='contained' 
+            onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}
+            className={classes.buttons}
+          >
+            X
+          </Button>,
           ''
         ]};
       case 'delete_input': // Removes and input
@@ -88,24 +137,29 @@ const Landing = () => {
       <form onSubmit={(event)=>submitForm(event)}>
         {Object.entries(inputs).map(([key,val])=>{
           return(
-            <span key={key}>
+            <span className={classes.inputBlock} key={key}>
               {val[0]}
-            </span>
-          );
-        })}
-        <Button variant="contained" onClick={()=>setInputs({type: 'add_input'})}>+</Button>
-        <br/>
-        {Object.entries(inputs).map(([key,val])=>{
-          return(
-            <span key={key}>
               {val[1]}
             </span>
           );
         })}
         <br/>
+        <Button 
+          variant="contained" 
+          onClick={()=>{
+            setInputCount(inputCount+1);
+            setCurrentCount(currentCount+1);
+            setInputs({type: 'add_input'})
+          }}
+          className={classes.buttons}
+        >
+          +
+        </Button>
         <br/>
         <Button
+          variant="contained" 
           type='submit'
+          className={classes.buttons}
         >
           Submit
         </Button>
