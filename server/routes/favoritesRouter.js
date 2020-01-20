@@ -36,7 +36,9 @@ router.post('/', rejectUnauthenticated, async (req,res) =>{
     await pool.query(`BEGIN`);
     await Promise.all(wordLists.map(list=>{
       return client.query(queryText, [userID, wordID, list]);
-    }));
+    })).catch(err=>{
+      console.log(err)
+    });
     await client.query('COMMIT');
     res.sendStatus(201);
   } catch (error) {
