@@ -177,7 +177,7 @@ const Landing = () => {
       <List
         component='nav'
         subheader={
-          <ListSubheader component='div'>
+          <ListSubheader component='div' style={{backgroundColor: 'black'}}>
             Acronyms
           </ListSubheader>
         }
