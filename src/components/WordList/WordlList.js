@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
   nested: {
     paddingLeft: theme.spacing(4),
+    backgroundColor: 'lightgray'
   },
 }));
 
@@ -29,11 +30,9 @@ const WordList = (props) => {
   return (
     <ListItem className={classes.nested}>
       <ListItemText primary={props.list.join(', ')} />
-      {
-        favorited?
-          <IconButton onClick={favoriteList}><Favorite /></IconButton> :
-          <IconButton onClick={favoriteList}><FavoriteBorder /></IconButton>
-      }
+      <IconButton onClick={favoriteList}>
+        {favorited? <Favorite style={{fill: '#C70767'}}/> : <FavoriteBorder style={{fill: '#C70767'}}/>}
+      </IconButton>
     </ListItem>
   )
 }

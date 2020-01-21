@@ -64,12 +64,12 @@ const Acronym = (props) => {
   return (
     <>
       <ListItem>
-        <ListItemText primary={Object.keys(props.acronym)[0]} />
+        <ListItemText style={{color: 'white'}} primary={Object.keys(props.acronym)[0]} />
         <IconButton onClick={handleFlag}>
-          {flagged? <Flag/> : <FlagOutlined/>}
+          {flagged? <Flag style={{fill: 'red'}}/> : <FlagOutlined style={{fill: 'red'}}/>}
         </IconButton>
         <IconButton onClick={favoriteAll}>
-          {all ? <Favorite /> :<FavoriteBorder />}
+          {all ? <Favorite style={{fill: '#C70767'}}/> :<FavoriteBorder style={{fill: '#C70767'}}/>}
         </IconButton>
         <IconButton onClick={handleClick}>
           {open ? <ExpandLess /> : <ExpandMore />}
