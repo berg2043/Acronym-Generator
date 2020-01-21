@@ -19,11 +19,12 @@ const Admin = () => {
 
   return(
     <>
-      <Table>
+      <Table style={{maxWidth: 800, margin: 'auto', backgroundColor: '#5F5B5B', marginTop: 8}}>
         <TableHead>
-          <TableRow>
+          <TableRow style={{backgroundColor: 'black', }}>
             <TableCell>Words</TableCell>
             <TableCell>Length</TableCell>
+            <TableCell>Times Favorited</TableCell>
             <TableCell colSpan={2}>Remove?</TableCell>
           </TableRow>
         </TableHead>
