@@ -28,6 +28,7 @@ const AdminRow = (props) => {
     <TableRow>
       <TableCell>{props.item.word}</TableCell>
       <TableCell>{props.item.length}</TableCell>
+      <TableCell>{props.item.count}</TableCell>
       <TableCell>
         <span onClick={removeWord} className={classes.pseudolink}>Yes</span>
       </TableCell>
