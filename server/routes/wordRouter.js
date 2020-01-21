@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('./../modules/pool');
 const permute = require('./../modules/permutations');
+const permuteToString = require('./../modules/permuteToString');
 const axios = require('axios');
 const { rejectUnauthenticated } = require('../modules/authenticationMiddleware');
 require('dotenv').config();
@@ -41,17 +42,21 @@ router.get('/', (req, res)=>{
     },[])
     // console.log(seedWord)
     console.log('permuting', Date(Date.now()))
-    const potentialAcronyms = permute(seedWord);
+    const potentialAcronyms = permuteToString(permute(seedWord));
     console.log('querrying', Date(Date.now()))
     const queryText = `SELECT * FROM "words" WHERE "word" = ANY($1::varchar(50)[]);`;
     pool.query(queryText, [potentialAcronyms]).then(results => {
       console.log('back from db', Date(Date.now()))
       const finalResponse = [];
       for(let row of results.rows){
+        const holder = []
+        for(let i=0; i<row.word.split('').length; i++){
+          holder.push(arrOfSyns[i].filter(word=>word[0]===row.word[i]))
+        }
         finalResponse.push({
           [row.word]: {
             id: row.id,
-            wordLists: ['a','b'],
+            wordLists: permute(holder),
           }
         });
       }
