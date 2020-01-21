@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     width: 200, 
     margin: theme.spacing(1),
-  }
+  },
 }));
 
 const Landing = () => {
@@ -36,7 +36,7 @@ const Landing = () => {
 
   // Sets initial counts
   const [inputCount, setInputCount] = useState(1);
-  const [currentCount, setCurrentCount] = useState(1);
+  const [currentCount, setCurrentCount] = useState(2);
 
   // Sets initial inputs
   const initialInput = {
@@ -46,11 +46,13 @@ const Landing = () => {
         onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}
         className={classes.inputs}
         variant='filled'
+        style={{backgroundColor: '#5F5B5B'}}
       />, 
       <Button 
         variant='contained' 
         onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}
         className={classes.buttons}
+        style={{backgroundColor: '#741400', color: 'white'}}
       >
         X
       </Button>,
@@ -62,11 +64,13 @@ const Landing = () => {
         onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:2}})}}
         className={classes.inputs}
         variant='filled'
+        style={{backgroundColor: '#5F5B5B'}}
       />,
       <Button 
         variant='contained' 
         onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}
         className={classes.buttons}
+        style={{backgroundColor: '#741400', color: 'white'}}
       >
         X
       </Button>,
@@ -91,11 +95,15 @@ const Landing = () => {
             })}}
             className={classes.inputs}
             variant='filled'
+            style={{backgroundColor: '#5F5B5B'}}
           />,
           <Button 
             variant='contained' 
-            onClick={()=>setInputs({type: 'delete_input', payload: `input${count}`})}
+            onClick={()=>{
+              setInputs({type: 'delete_input', payload: `input${count}`})
+            }}
             className={classes.buttons}
+            style={{backgroundColor: '#741400', color: 'white'}}
           >
             X
           </Button>,
@@ -103,7 +111,7 @@ const Landing = () => {
         ]};
       case 'delete_input': // Removes and input
         delete state[action.payload]  ;
-        setCurrentCount(currentCount-1);
+        setCurrentCount(currentCount-0.5);
         return state;
       case 'edit_input': // Edits the value of the input
         state[`input${action.payload.num}`][2] = action.payload.event;
@@ -139,7 +147,7 @@ const Landing = () => {
           return(
             <span className={classes.inputBlock} key={key}>
               {val[0]}
-              {val[1]}
+              {currentCount>2?val[1]:null}
             </span>
           );
         })}
@@ -152,6 +160,7 @@ const Landing = () => {
             setInputs({type: 'add_input'})
           }}
           className={classes.buttons}
+          color='secondary'
         >
           +
         </Button>
@@ -160,6 +169,7 @@ const Landing = () => {
           variant="contained" 
           type='submit'
           className={classes.buttons}
+          style={{backgroundColor: '#115671', color: 'white'}}
         >
           Submit
         </Button>
@@ -168,7 +178,7 @@ const Landing = () => {
         component='nav'
         subheader={
           <ListSubheader component='div'>
-            Words in Order
+            Acronyms
           </ListSubheader>
         }
         className={classes.root}
