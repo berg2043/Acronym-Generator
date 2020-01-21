@@ -28,11 +28,11 @@ const Favorites = () => {
 
   return(
     <>
-      <h1>Welcome {user.username}</h1>
+      <h1 style={{color:'white'}}>Welcome {user.username}</h1>
       <List
         component='nav'
         subheader={
-          <ListSubheader component='div'>
+          <ListSubheader component='div' style={{backgroundColor: 'black'}}>
             Words in Order
           </ListSubheader>
         }
