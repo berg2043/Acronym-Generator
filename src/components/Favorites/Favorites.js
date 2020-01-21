@@ -33,7 +33,7 @@ const Favorites = () => {
         component='nav'
         subheader={
           <ListSubheader component='div' style={{backgroundColor: 'black'}}>
-            Words in Order
+            Favorite Acronyms
           </ListSubheader>
         }
         className={classes.root}
