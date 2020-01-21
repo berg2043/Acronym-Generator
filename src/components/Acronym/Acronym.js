@@ -67,7 +67,11 @@ const Acronym = (props) => {
           {flagged? <Flag style={{fill: 'red'}}/> : <FlagOutlined style={{fill: 'red'}}/>}
         </IconButton>
         <IconButton onClick={favoriteAll}>
-          {all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length ? <Favorite style={{fill: '#C70767'}}/> :<FavoriteBorder style={{fill: '#C70767'}}/>}
+          {
+            all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length ?
+             <Favorite style={{fill: '#C70767'}}/> :
+             <FavoriteBorder style={{fill: '#C70767'}}/>
+          }
         </IconButton>
         <IconButton onClick={handleClick}>
           {open ? <ExpandLess /> : <ExpandMore />}
