@@ -10,8 +10,10 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
     const admin = await pool.query(`SELECT "admin" FROM "user" WHERE "id" = $1;`, [req.session.passport.user]);
     if(admin.rows[0].admin){
       const queryText = `
-        SELECT "w"."id", "w"."word", LENGTH("w"."word") FROM "removals" "r"
+        SELECT "w"."id", "w"."word", COUNT("f"."word_id"), LENGTH("w"."word") FROM "removals" "r"
         JOIN "words" w ON "r"."id" = "w"."id"
+        LEFT JOIN "favorites" f ON "w"."id" = "f"."word_id"
+        GROUP BY "w"."id"
         ORDER BY "w"."word";
       `
       const removals = await pool.query(queryText);
