@@ -17,6 +17,7 @@ router.post('/', (req, res) => {
 // Takes words from session, gets accronyms from API and checks them with the wordlist
 // Returns found words and the lists that made them
 router.get('/', (req, res)=>{
+  console.log('getting syns')
   let linksArr = req.session.words.map(word => {
     return `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.THESAURUS_KEY}`;
   })
@@ -30,23 +31,38 @@ router.get('/', (req, res)=>{
       }
       arrOfSyns.push(wordAndSyns);
     }
-    const potentialAcronyms = permute(arrOfSyns);
+    let seedWord = arrOfSyns.reduce((outer, inner)=>{
+      let arr = inner.reduce((acum, word)=>{
+        acum[word[0]] = 1;
+        return acum;
+      },{})
+      outer.push(Object.keys(arr));
+      return outer;
+    },[])
+    // console.log(seedWord)
+    console.log('permuting', Date(Date.now()))
+    const potentialAcronyms = permute(seedWord);
+    console.log('querrying', Date(Date.now()))
     const queryText = `SELECT * FROM "words" WHERE "word" = ANY($1::varchar(50)[]);`;
-    pool.query(queryText, [Object.keys(potentialAcronyms)]).then(results => {
+    pool.query(queryText, [potentialAcronyms]).then(results => {
+      console.log('back from db', Date(Date.now()))
       const finalResponse = [];
       for(let row of results.rows){
         finalResponse.push({
           [row.word]: {
             id: row.id,
-            wordLists: potentialAcronyms[row.word],
+            wordLists: ['a','b'],
           }
         });
       }
+      console.log('sending info', Date(Date.now()))
       res.send(finalResponse);
     })
+  // res.sendStatus(200);
   }).catch(err => {
     console.log('err getting acronyms', err)
   })
+  
 })
 
 // Deletes a word from the master word list

@@ -15,14 +15,14 @@ module.exports = function permute(arrOfArrs) {
   helper([], 0);
 
   // Creates an object that has accronyms that references the words that create them
-  const finalObject = permutations.reduce((outer, inner)=>{
+  const permutationStrings = permutations.reduce((outer, inner)=>{
     let word = inner.reduce((str, i)=>{
       str += i[0]
       return str;
     },'')
-    outer[word]? outer[word].push(inner):outer[word]=[inner]
+    outer.push(word);
     return outer;
-  },{})
+  },[])
 
-  return finalObject;
+  return permutationStrings;
 }
