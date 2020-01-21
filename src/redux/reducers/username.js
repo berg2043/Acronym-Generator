@@ -1,3 +1,4 @@
+// Holds user info and clears it on logout
 export default (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':

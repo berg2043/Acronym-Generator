@@ -5,7 +5,7 @@ import { AppBar, Toolbar, IconButton, Menu, MenuItem, makeStyles, Button, Chip, 
 import MenuIcon from '@material-ui/icons/Menu';
 import FaceRounded from '@material-ui/icons/Face';
 
-// Material-ui styling
+// Sets up material ui classes
 const useStyles = makeStyles(theme=>({
   menuButton: {
       marginRight: theme.spacing(2),
@@ -16,12 +16,18 @@ const useStyles = makeStyles(theme=>({
 }));
 
 const Nav = () =>{
+  // Adds material ui classes
   const classes = useStyles();
-  // State for menu button
+  
+  // Connects to redux
+  const dispatch = useDispatch();
+  const user = useSelector(state=>state.username);
+
+  // Default state
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorE2, setAnchorE2] = React.useState(null);
 
-  // Handles menu opening
+  // Handles menus opening
   function handleMenu(event){
     setAnchorEl(event.currentTarget)
   }
@@ -38,8 +44,6 @@ const Nav = () =>{
     }
   }
 
-  const user = useSelector(state=>state.username);
-  const dispatch = useDispatch();
   
   const history = useHistory();
   return(

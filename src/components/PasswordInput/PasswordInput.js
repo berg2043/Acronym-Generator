@@ -11,13 +11,13 @@ const useStyles = makeStyles( theme => ({
 }));
 
 const PasswordInput = (props) => {
-  // Adds styling
+  // Adds material ui classes
   const classes = useStyles();
   
-  // States 
+  // Default State
   const [passwordIsMasked, setPasswordIsMasked] = useState(true);
 
-  // Toggles the mask
+  // Toggles the password mask
   function toggleMask(){
     setPasswordIsMasked(!passwordIsMasked)
   } 

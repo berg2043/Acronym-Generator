@@ -4,6 +4,7 @@ import PasswordInput from '../PasswordInput/PasswordInput';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   inputs: {
     backgroundColor: '#5F5B5B',
@@ -16,15 +17,20 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const LogIn = () => {
+  // Adds material ui classes
   const classes = useStyles();
+  
+  // Connects to redux
   const dispatch = useDispatch();
-  // States
+
+  // Default State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
   // Adds histroy for progromatic routing
   const history = useHistory();
   
+  // Logs user in
   function login(event){
     event.preventDefault();
     dispatch({type: 'LOGIN', payload:{username, password}});

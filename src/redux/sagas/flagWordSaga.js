@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { takeLatest } from "redux-saga/effects";
 
+// Flags a word for admin review on the DB
 function* flagWord(action){
   try {
     const toFlag = action.payload[Object.keys(action.payload)[0]].id
@@ -10,6 +11,7 @@ function* flagWord(action){
   }
 }
 
+// Unflags a word on the DB
 function* unflagWord(action){
   try {
     yield Axios.delete('/api/admin/'+action.payload.id);

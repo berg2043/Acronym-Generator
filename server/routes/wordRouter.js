@@ -34,7 +34,7 @@ router.get('/', (req, res)=>{
     const queryText = `SELECT * FROM "words" WHERE "word" = ANY($1::varchar(50)[]);`;
     pool.query(queryText, [Object.keys(potentialAcronyms)]).then(results => {
       const finalResponse = [];
-      for(row of results.rows){
+      for(let row of results.rows){
         finalResponse.push({
           [row.word]: {
             id: row.id,
@@ -63,7 +63,7 @@ router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     }
   } catch (error) {
     res.sendStatus(500);
-    console.log(err);
+    console.log(error);
   };
 });
 

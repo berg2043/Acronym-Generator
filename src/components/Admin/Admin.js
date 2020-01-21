@@ -5,9 +5,13 @@ import Axios from 'axios';
 import AdminRow from '../AdminRow/AdminRow';
 
 const Admin = () => {
-  const [removals, setRemovals] = useState([])
+  // Connects to redux
   const user = useSelector(state=>state.username);
+  
+  // Default state
+  const [removals, setRemovals] = useState([])
 
+  // conditionally renders the page
   if(user.admin && removals.length === 0){
     Axios.get('/api/admin').then(response=>{
       setRemovals(response.data);

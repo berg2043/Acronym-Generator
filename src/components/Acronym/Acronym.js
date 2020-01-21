@@ -5,17 +5,22 @@ import WordList from '../WordList/WordlList';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Acronym = (props) => {
+  // Connects to redux
   const dispatch = useDispatch();
+  const user = useSelector(state=>state.username);
+
+  // Default State
   const [open, setOpen] = useState(false);
   const [all, setAll] = useState(false);
   const [count, setCount] = useState(0);
   const [flagged, setFlagged] = useState(false);
-  const user = useSelector(state=>state.username);
   
+  // Hadles the opening and closing of the word lists under the acronym
   function handleClick() {
     setOpen(!open);
   }
 
+  // Toggles the flagging of words for admin review
   function handleFlag() {
     if(!flagged){
       dispatch({type: 'FLAG_WORD', payload: props.acronym})
@@ -23,6 +28,7 @@ const Acronym = (props) => {
     setFlagged(!flagged);
   }
 
+  // Favorites all the word lists under the acronym
   function favoriteAll() {
     if(user.id){
       if(all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length){
@@ -39,6 +45,7 @@ const Acronym = (props) => {
     }
   }
 
+  // Favorites a single word combination. Listed here to increase the count
   function favoriteSingle(favoriteList, favoriteStatus){
     if(user.id){
       const acronymAndList = {

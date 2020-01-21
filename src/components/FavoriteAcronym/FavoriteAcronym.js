@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles, List, ListItem, ListItemText, Button, TextField } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -28,12 +29,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FavoriteAcronym = (props) => {
+  // Adds material ui classes
   const classes = useStyles();
+
+  // Connects to redux
   const dispatch = useDispatch();
+
+  // Default state
   const [edit, setEdit] = useState(false);
   const [words, setWords] = useState([])
   const [acronym, setAcronym] = useState(props.favorite.word)
 
+  // Updates setWords on load to work around an error with having this happen in default state
   useEffect(()=>{
     const holder={}
     props.favorite.word_list.map((word, i)=>{
@@ -43,11 +50,13 @@ const FavoriteAcronym = (props) => {
     setWords(holder)
   }, [props.favorite.word_list])
 
+  // Saves changes made to the word or word lists
   function saveChange(){
     setEdit(!edit)
     dispatch({type: 'UPDATE_FAVORITE', payload: {acronym, words, wordList: props.favorite.word_list}})
   }
 
+  // Removes an item from favorites
   function removeFavorite(){
     const objectToSend = {
       [acronym]:{

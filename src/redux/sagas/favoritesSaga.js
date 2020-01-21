@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { takeLatest, takeEvery, put } from "redux-saga/effects";
 
+// Adds item to favorites on DB
 function* addFavorite(action){
   try {
     yield Axios.post('/api/favorites', action.payload)
@@ -9,6 +10,7 @@ function* addFavorite(action){
   }
 }
 
+// Removes item from favorites on DB
 function* removeFavorite(action){
   try {
     yield Axios.delete('/api/favorites', {data: action.payload})
@@ -18,6 +20,7 @@ function* removeFavorite(action){
   }
 }
 
+// Gets a list of favorites for the user
 function* getFavorites(action){
   try{
     const favorites = yield Axios.get('/api/favorites');
@@ -27,6 +30,7 @@ function* getFavorites(action){
   }
 }
 
+// Updates a favorite entry after the user edits it
 function* updateFavorite(action){
   try {
     yield Axios.put('/api/favorites', action.payload);

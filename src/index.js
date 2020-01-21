@@ -19,6 +19,7 @@ const store = createStore(
 
 sagaMiddleware.run(sagas)
 
+// Edits theme to personal styling
 const theme = createMuiTheme({
   palette: {
     type: 'dark',

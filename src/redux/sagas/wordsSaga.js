@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { takeLatest, put } from "redux-saga/effects";
 
+// Deletes a word from the DB after admin review
 function* deleteWord(action){
   try {
     yield Axios.delete('/api/words/'+action.payload.id);

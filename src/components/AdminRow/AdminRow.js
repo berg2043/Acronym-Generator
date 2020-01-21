@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { TableRow, TableCell, makeStyles } from '@material-ui/core';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme=>({
   pseudolink: {
     color: 'blue',
@@ -11,14 +12,19 @@ const useStyles = makeStyles(theme=>({
 }))
 
 const AdminRow = (props) => {
-  const dispatch = useDispatch();
+  // Adds material ui classes
   const classes = useStyles();
 
+  // Connects to redux
+  const dispatch = useDispatch();
+
+  // Removes the word from the word list
   function removeWord(){
     dispatch({type: 'REMOVE_WORD', payload: {id: props.item.id}})
     props.setRemovals([]) // Change to a saga
   }
 
+  // Just unflags the word
   function unflag(){
     dispatch({type: 'UNFLAG_WORD', payload: {id: props.item.id}})
     props.setRemovals([]) // Change to a saga

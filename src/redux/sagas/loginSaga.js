@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import Axios from 'axios';
 
+// Logs a user in
 function* login(action){
   try {
     const config = {
@@ -14,6 +15,7 @@ function* login(action){
   }
 }
 
+// Logs a user out
 function* logout(action){
   try {
     const config = {

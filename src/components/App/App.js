@@ -26,7 +26,6 @@ function App() {
           <Route exact path='/register' component={Register} />
           <ProtectedRoute exact path='/favorites' component={Favorites}/>
           <Route exact path='/login' component={LogIn} />
-          {/* <Route exact path='/favorites' component={Favorites} /> */}
           <Route exact path='/admin' component={Admin}/>
         </Switch>
       </Router>

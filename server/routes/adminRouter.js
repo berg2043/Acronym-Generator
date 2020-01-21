@@ -23,7 +23,7 @@ router.get('/', rejectUnauthenticated, async (req, res) => {
     }
   } catch (error) {
     res.sendStatus(500);
-    console.log(err);
+    console.log(error);
   };
 });
 
@@ -52,7 +52,7 @@ router.delete('/:id', rejectUnauthenticated, async (req, res) => {
     }
   } catch (error) {
     res.sendStatus(500);
-    console.log(err);
+    console.log(error);
   };
 });
 

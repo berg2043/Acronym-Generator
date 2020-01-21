@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles, List, ListSubheader } from '@material-ui/core';
 import FavoriteAcronym from './../FavoriteAcronym/FavoriteAcronym';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -16,12 +17,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Favorites = () => {
-  
+  // Adds material ui classes
   const classes = useStyles();
-  const user = useSelector(state=>state.username);
+
+  // Connects to redux
   const dispatch = useDispatch();
+  const user = useSelector(state=>state.username);
   const favorites = useSelector(state=>state.favorites)
 
+  // Gets list of favorites on load
   useEffect(()=>{
     dispatch({type: 'GET_FAVORITES'});
   }, [dispatch])

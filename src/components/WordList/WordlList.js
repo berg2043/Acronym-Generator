@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles, ListItem, ListItemText, IconButton } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons/';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -15,17 +16,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const WordList = (props) => {
+  // Adds material ui classes
   const classes = useStyles();
-  const [favorited, setFavorited] = useState(false);
 
+  // Default state
+  const [favorited, setFavorited] = useState(false);
+  
+  // Favortites this word list if the parrent acronym is favorited
+  useEffect(()=>{
+    setFavorited(props.all);
+  },[props.all])
+
+  // Toggles favorites
   function favoriteList() {
     props.favoriteSingle(props.list, favorited);
     setFavorited(!favorited);
   }
-  
-  useEffect(()=>{
-    setFavorited(props.all);
-  },[props.all])
 
   return (
     <ListItem className={classes.nested}>

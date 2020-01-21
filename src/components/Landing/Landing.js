@@ -4,6 +4,7 @@ import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import Acronym from '../Acronym/Acronym';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
@@ -29,12 +30,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Landing = () => {
+  // Adds material ui classes
   const classes = useStyles();
-  // Adds Redux
+
+  // Connects to redux
   const dispatch = useDispatch();
   const acronyms = useSelector(state => state.acronyms)
 
-  // Sets initial counts
+  // Default State
   const [inputCount, setInputCount] = useState(1);
   const [currentCount, setCurrentCount] = useState(2);
 
@@ -121,7 +124,7 @@ const Landing = () => {
     }
   }
 
-  // Brings all the previous input functionality together
+  // Brings all the previous input functionality together in a react reducer
   const [inputs, setInputs] = useReducer(inputFunction, initialInput);
 
   // Sends the words in the inputs to the server to be stored in session

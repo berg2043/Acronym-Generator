@@ -1,6 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import Axios from 'axios';
 
+// Registers a user
 function* register(action){
   try {
     yield Axios.post('/api/user/register', action.payload);

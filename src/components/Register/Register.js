@@ -4,6 +4,7 @@ import PasswordInput from '../PasswordInput/PasswordInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+// Sets up material ui classes
 const useStyles = makeStyles(theme => ({
   inputs: {
     backgroundColor: '#5F5B5B',
@@ -16,27 +17,32 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Register = () => {
+  // Adds material ui classes
   const classes = useStyles();
 
+  // Connects to redux
   const dispatch = useDispatch();
-
-  // States
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
   const user = useSelector(state=>state.username);
 
-  function registerUser(event){
-    event.preventDefault();
-    dispatch({type: 'REGISTER', payload: {username, password}});
-  }
+  // Default State
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  
+  // Adds histroy for progromatic routing
   const history = useHistory();
+
+  // Pushes user to the landing page after they get logged in from registering
   useEffect(()=>{
-    console.log(user.id)
     if(user.id){
       history.push('/')
     }
   }, [user, history])
+
+  // Registers the user and logs them in
+  function registerUser(event){
+    event.preventDefault();
+    dispatch({type: 'REGISTER', payload: {username, password}});
+  }
 
   return(
     <>

@@ -1,3 +1,4 @@
+// Holds favorites
 export default (state = [], action) => {
   switch (action.type) {
     case 'SET_FAVORITES':
