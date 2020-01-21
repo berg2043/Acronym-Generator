@@ -25,13 +25,14 @@ const Acronym = (props) => {
 
   function favoriteAll() {
     if(user.id){
-      if(all){
+      if(all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length){
         dispatch({type: 'REMOVE_FAVORITE', payload: props.acronym});
         setCount(0)
-        setAll(false)
+        all===false? setAll(null) : setAll(false);
       } else {
         dispatch({type: 'ADD_FAVORITE', payload: props.acronym});
-        setAll(!all);
+        setCount(props.acronym[Object.keys(props.acronym)[0]].wordLists.length)
+        setAll(true);
       }
     } else {
       alert('you need to login')
@@ -51,9 +52,6 @@ const Acronym = (props) => {
         setCount(count-1);
       } else {
         dispatch({type: 'ADD_FAVORITE', payload: acronymAndList});
-        if(count+1 === props.acronym[Object.keys(props.acronym)[0]].wordLists.length){
-          setAll(true);
-        }
         setCount(count+1);
       }
     } else {
@@ -69,7 +67,7 @@ const Acronym = (props) => {
           {flagged? <Flag style={{fill: 'red'}}/> : <FlagOutlined style={{fill: 'red'}}/>}
         </IconButton>
         <IconButton onClick={favoriteAll}>
-          {all ? <Favorite style={{fill: '#C70767'}}/> :<FavoriteBorder style={{fill: '#C70767'}}/>}
+          {all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length ? <Favorite style={{fill: '#C70767'}}/> :<FavoriteBorder style={{fill: '#C70767'}}/>}
         </IconButton>
         <IconButton onClick={handleClick}>
           {open ? <ExpandLess /> : <ExpandMore />}
