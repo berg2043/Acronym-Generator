@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, makeStyles } from '@material-ui/core';
 import PasswordInput from '../PasswordInput/PasswordInput';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+const useStyles = makeStyles(theme => ({
+  inputs: {
+    backgroundColor: '#5F5B5B',
+    margin: theme.spacing(1),
+    width: 200,
+  },
+  buttons: {
+    margin: theme.spacing(1),
+  },
+}))
+
 const LogIn = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   // States
   const [username, setUsername] = useState('');
@@ -27,22 +39,33 @@ const LogIn = () => {
             label='Username'
             value={username}
             onChange={event=>setUsername(event.target.value)}
+            variant='filled'
+            className={classes.inputs}
           />
           <br/>
           <PasswordInput
             label='Password'
             value={password}
             onChange={event=>setPassword(event.target.value)}
+            variant='filled'
+            className={classes.inputs}
           />
           <br/>
           <Button
             type='submit'
+            variant='contained'
+            color='primary'
+            className={classes.buttons}
           >
             Log In
           </Button>
         </form>
-        <p>Not Registered Yet?</p>
-        <p><a href="/register" onClick={event=>{event.preventDefault(); history.push('/register')}}>Register Here</a></p>
+        <h4 style={{color: 'white'}}>Not Registered Yet?</h4>
+        <p>
+          <a href="/register" onClick={event=>{event.preventDefault(); history.push('/register');}}>
+            <strong>Register Here</strong>
+          </a>
+        </p>
       </div>
     </>
   );
