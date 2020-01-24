@@ -45,7 +45,7 @@ const Landing = () => {
   const initialInput = {
     input1: [
       <TextField
-        label={1} 
+        label='word' 
         onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:1}})}}
         className={classes.inputs}
         variant='filled'
@@ -63,7 +63,7 @@ const Landing = () => {
     ],
     input2: [
       <TextField 
-        label={2} 
+        label='word' 
         onChange={(event)=>{setInputs({type: 'edit_input', payload:{event: event.target.value, num:2}})}}
         className={classes.inputs}
         variant='filled'
@@ -88,7 +88,7 @@ const Landing = () => {
         let count = inputCount+1;
         return {...state,[`input${count}`]: [
           <TextField 
-            label={count} 
+            label='word'
             onChange={(event)=>{setInputs({
               type: 'edit_input', 
               payload:{
@@ -145,6 +145,25 @@ const Landing = () => {
 
   return(
     <>
+      <p style={{color: 'white', maxWidth: 800, margin: 'auto', marginTop: 8}}>
+        Write words describing the process, product, etc that you would like an
+        acronym for.  Press the + button to add more fields and the X button to 
+        remove that field (minimum two fields).  Press submit to get your acronym.  
+        If it takes longer than 30 seconds to get an acronym, the server has crashed.
+      </p>
+      <Button 
+        variant="contained" 
+        onClick={()=>{
+          setInputCount(inputCount+1);
+          setCurrentCount(currentCount+1);
+          setInputs({type: 'add_input'})
+        }}
+        className={classes.buttons}
+        color='secondary'
+      >
+        +
+      </Button>
+      <br/>
       <form onSubmit={(event)=>submitForm(event)}>
         {Object.entries(inputs).map(([key,val])=>{
           return(
@@ -154,19 +173,6 @@ const Landing = () => {
             </span>
           );
         })}
-        <br/>
-        <Button 
-          variant="contained" 
-          onClick={()=>{
-            setInputCount(inputCount+1);
-            setCurrentCount(currentCount+1);
-            setInputs({type: 'add_input'})
-          }}
-          className={classes.buttons}
-          color='secondary'
-        >
-          +
-        </Button>
         <br/>
         <Button
           variant="contained" 
