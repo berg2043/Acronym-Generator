@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, ListItem, ListItemText, IconButton } from '@material-ui/core';
+import { makeStyles, ListItem, ListItemText, IconButton, Tooltip } from '@material-ui/core';
 import { Favorite, FavoriteBorder } from '@material-ui/icons/';
 
 // Sets up material ui classes
@@ -37,7 +37,15 @@ const WordList = (props) => {
     <ListItem className={classes.nested}>
       <ListItemText primary={props.list.join(', ')} />
       <IconButton onClick={favoriteList}>
-        {favorited? <Favorite style={{fill: '#C70767'}}/> : <FavoriteBorder style={{fill: '#C70767'}}/>}
+        {
+          favorited? 
+          <Tooltip title="Remove from Favorites" placement="top">
+            <Favorite style={{fill: '#C70767'}}/>/> 
+          </Tooltip> :
+          <Tooltip title="Add to Favorites" placement="top">
+            <FavoriteBorder style={{fill: '#C70767'}}/>
+          </Tooltip>
+        }
       </IconButton>
     </ListItem>
   )

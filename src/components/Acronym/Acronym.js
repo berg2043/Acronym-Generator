@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, Collapse, IconButton } from '@material-ui/core';
+import { List, ListItem, ListItemText, Collapse, IconButton, Tooltip } from '@material-ui/core';
 import { ExpandLess, ExpandMore, Favorite, FavoriteBorder, FlagOutlined, Flag } from '@material-ui/icons/';
 import WordList from '../WordList/WordlList';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,13 +71,25 @@ const Acronym = (props) => {
       <ListItem>
         <ListItemText style={{color: 'white'}} primary={Object.keys(props.acronym)[0]} />
         <IconButton onClick={handleFlag}>
-          {flagged? <Flag style={{fill: 'red'}}/> : <FlagOutlined style={{fill: 'red'}}/>}
+          {
+            flagged? 
+              <Tooltip title="Flag will be reviewed by admin" placement="top">
+                <Flag style={{fill: 'red'}}/>
+              </Tooltip> :
+              <Tooltip title="Flag for removal" placement="top">
+                <FlagOutlined style={{fill: 'red'}}/>
+              </Tooltip>
+          }
         </IconButton>
         <IconButton onClick={favoriteAll}>
           {
             all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length ?
-             <Favorite style={{fill: '#C70767'}}/> :
-             <FavoriteBorder style={{fill: '#C70767'}}/>
+            <Tooltip title="Remove all from Favorites" placement="top">
+              <Favorite style={{fill: '#C70767'}}/> 
+            </Tooltip> :
+            <Tooltip title="Add all to Favorites" placement="top">
+              <FavoriteBorder style={{fill: '#C70767'}}/>
+            </Tooltip>
           }
         </IconButton>
         <IconButton onClick={handleClick}>
