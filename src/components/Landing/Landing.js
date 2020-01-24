@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { TextField, Button, makeStyles, List, ListSubheader } from '@material-ui/core';
+import { TextField, Button, makeStyles, List, ListSubheader, Tooltip } from '@material-ui/core';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import Acronym from '../Acronym/Acronym';
@@ -51,14 +51,16 @@ const Landing = () => {
         variant='filled'
         style={{backgroundColor: '#5F5B5B'}}
       />, 
-      <Button 
-        variant='contained' 
-        onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}
-        className={classes.buttons}
-        style={{backgroundColor: '#741400', color: 'white'}}
-      >
-        X
-      </Button>,
+      <Tooltip title="Remove Field" placement="top">
+        <Button 
+          variant='contained' 
+          onClick={()=>setInputs({type: 'delete_input', payload: 'input1'})}
+          className={classes.buttons}
+          style={{backgroundColor: '#741400', color: 'white'}}
+        >
+          X
+        </Button>
+      </Tooltip>,
       ''
     ],
     input2: [
@@ -69,14 +71,16 @@ const Landing = () => {
         variant='filled'
         style={{backgroundColor: '#5F5B5B'}}
       />,
-      <Button 
-        variant='contained' 
-        onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}
-        className={classes.buttons}
-        style={{backgroundColor: '#741400', color: 'white'}}
-      >
-        X
-      </Button>,
+      <Tooltip title="Remove Field" placement="top">
+        <Button 
+          variant='contained' 
+          onClick={()=>setInputs({type: 'delete_input', payload: 'input2'})}
+          className={classes.buttons}
+          style={{backgroundColor: '#741400', color: 'white'}}
+        >
+          X
+        </Button>
+      </Tooltip>,
       ''
     ]
   };
@@ -100,16 +104,18 @@ const Landing = () => {
             variant='filled'
             style={{backgroundColor: '#5F5B5B'}}
           />,
-          <Button 
-            variant='contained' 
-            onClick={()=>{
-              setInputs({type: 'delete_input', payload: `input${count}`})
-            }}
-            className={classes.buttons}
-            style={{backgroundColor: '#741400', color: 'white'}}
-          >
-            X
-          </Button>,
+          <Tooltip title="Remove Field" placement="top">
+            <Button 
+              variant='contained' 
+              onClick={()=>{
+                setInputs({type: 'delete_input', payload: `input${count}`})
+              }}
+              className={classes.buttons}
+              style={{backgroundColor: '#741400', color: 'white'}}
+            >
+              X
+            </Button>
+          </Tooltip>,
           ''
         ]};
       case 'delete_input': // Removes and input
@@ -151,18 +157,20 @@ const Landing = () => {
         remove that field (minimum two fields).  Press submit to get your acronym.  
         If it takes longer than 30 seconds to get an acronym, the server has crashed.
       </p>
-      <Button 
-        variant="contained" 
-        onClick={()=>{
-          setInputCount(inputCount+1);
-          setCurrentCount(currentCount+1);
-          setInputs({type: 'add_input'})
-        }}
-        className={classes.buttons}
-        color='secondary'
-      >
-        +
-      </Button>
+      <Tooltip title="Add" placement="top">
+        <Button 
+          variant="contained" 
+          onClick={()=>{
+            setInputCount(inputCount+1);
+            setCurrentCount(currentCount+1);
+            setInputs({type: 'add_input'})
+          }}
+          className={classes.buttons}
+          color='secondary'
+        >
+          +
+        </Button>
+      </Tooltip>
       <br/>
       <form onSubmit={(event)=>submitForm(event)}>
         {Object.entries(inputs).map(([key,val])=>{
