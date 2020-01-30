@@ -16,59 +16,63 @@ router.post('/', (req, res) => {
 
 // Takes words from session, gets accronyms from API and checks them with the wordlist
 // Returns found words and the lists that made them
-router.get('/', (req, res)=>{
+router.get('/', async (req, res)=>{
   console.log('getting syns', Date(Date.now()))
+  
   let linksArr = req.session.words.map(word => {
     return `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.THESAURUS_KEY}`;
   })
-  axios.all(linksArr.map(link => axios.get(link))).then(async response => {
-    try {
-      let arrOfResponses = response.map(r => r.data);
-      const arrOfSyns = [];
-      for (let singleAPIResponse of arrOfResponses) {
-        let wordAndSyns = [singleAPIResponse[0].meta.id];
-        for (let lexicalCategoires of singleAPIResponse) {
+  try {
+    const response = await axios.all(linksArr.map(link => axios.get(link)))
+    let arrOfResponses = response.map(r => r.data);
+    const arrOfSyns = [];
+    for (let i=0;  i < arrOfResponses.length; i++) {
+      if(arrOfResponses[i][0].meta){
+        let wordAndSyns = [arrOfResponses[i][0].meta.id];
+        for (let lexicalCategoires of arrOfResponses[i]) {
           wordAndSyns = wordAndSyns.concat(lexicalCategoires.meta.syns[0]);
         }
         arrOfSyns.push(wordAndSyns);
+      } else {
+        arrOfSyns.push([req.session.words[i].toLowerCase()])
       }
-      let seedWord = arrOfSyns.reduce((outer, inner)=>{
-        let arr = inner.reduce((acum, word)=>{
-          acum[word[0]] = 1;
-          return acum;
-        },{})
-        outer.push(Object.keys(arr));
-        return outer;
-      },[])
-      console.log('permuting', Date(Date.now()))
-      let potentialAcronyms
-      potentialAcronyms = await axios({
-        method: 'POST',
-        url: process.env.LAMBDA_API, 
-        data: seedWord,
-        maxContentLength: Infinity
-      })
-      console.log('back from db', Date(Date.now()))
-      const finalResponse = [];
-      for(let row of potentialAcronyms.data){
-        const holder = []
-        for(let i=0; i<row.word.split('').length; i++){
-          holder.push(arrOfSyns[i].filter(word=>word[0]===row.word[i]))
-        }
-        finalResponse.push({
-          [row.word]: {
-            id: row.id,
-            wordLists: permute(holder, false),
-          }
-        });
-      }
-      console.log('sending info', Date(Date.now()))
-      res.send(finalResponse);
-    } catch (error) {
-      console.log(error)
-      res.sendStatus(500);
     }
-  })  
+    let seedWord = arrOfSyns.reduce((outer, inner)=>{
+      let arr = inner.reduce((acum, word)=>{
+        acum[word[0]] = 1;
+        return acum;
+      },{})
+      outer.push(Object.keys(arr));
+      return outer;
+    },[])
+    console.log('permuting', Date(Date.now()))
+    let potentialAcronyms
+    potentialAcronyms = await axios({
+      method: 'POST',
+      url: process.env.LAMBDA_API, 
+      data: seedWord,
+      maxContentLength: Infinity
+    })
+    console.log('back from db', Date(Date.now()))
+    const finalResponse = [];
+    for(let row of potentialAcronyms.data){
+      const holder = []
+      for(let i=0; i<row.word.split('').length; i++){
+        holder.push(arrOfSyns[i].filter(word=>word[0]===row.word[i]))
+      }
+      finalResponse.push({
+        [row.word]: {
+          id: row.id,
+          wordLists: permute(holder, false),
+        }
+      });
+    }
+    console.log('sending info', Date(Date.now()))
+    res.send(finalResponse);
+  } catch (error){
+    console.log(error);
+    res.sendStatus(500);
+  }
 })
 
 // Deletes a word from the master word list
