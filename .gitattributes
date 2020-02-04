@@ -1,2 +1,2 @@
 .gitattributes export-ignore
-*.sql linguist-vendored
+database.sql linguist-vendored
