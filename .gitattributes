@@ -1,2 +1,2 @@
 .gitattributes export-ignore
-database.sql linguist-vendored
+database.sql -linguist-detectable
