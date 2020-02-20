@@ -8,17 +8,12 @@ require('dotenv').config();
 const router = express.Router();
 
 // Adds the words to session to be used in the GET request
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  let tempUser = Date.now()+Math.floor(Math.random()*100).toString();
+  req.session.user = req.user || tempUser;
   req.session.words = req.session && req.session.words || [];
   req.session.words = req.body;
-  res.sendStatus(201);
-})
-
-// Takes words from session, gets accronyms from API and checks them with the wordlist
-// Returns found words and the lists that made them
-router.get('/', async (req, res)=>{
   console.log('getting syns', Date(Date.now()))
-  
   let linksArr = req.session.words.map(word => {
     return `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.THESAURUS_KEY}`;
   })
@@ -50,7 +45,7 @@ router.get('/', async (req, res)=>{
     potentialAcronyms = await axios({
       method: 'POST',
       url: process.env.LAMBDA_API, 
-      data: seedWord,
+      data: {words: seedWord, fileName: req.session.user+'.json'},
       maxContentLength: Infinity
     })
     console.log('back from db', Date(Date.now()))
@@ -61,19 +56,46 @@ router.get('/', async (req, res)=>{
         holder.push(arrOfSyns[i].filter(word=>word[0]===row.word[i]))
       }
       finalResponse.push({
-        [row.word]: {
-          id: row.id,
-          wordLists: permute(holder, false),
-        }
+        user: req.session.user,
+        acronym: row.word,
+        word_id: row.id,
+        wordLists: JSON.stringify(permute(holder, false)).replace(/\[/g, '{').replace(/]/g,'}')
       });
     }
     console.log('sending info', Date(Date.now()))
-    res.send(finalResponse);
+    const queryText = `
+        INSERT INTO "user_acronyms" ("user", "acronym", "word_id", "wordLists") (
+          SELECT
+            (data->>'user')::text, (data->>'acronym')::text, (data->>'word_id')::int, (data->>'wordLists')::text[][]
+          FROM (
+            SELECT json_array_elements($1::json) AS data
+          ) tmp
+        );
+      `;
+    await pool.query(queryText, [JSON.stringify(finalResponse)])
+    res.sendStatus(201);
   } catch (error){
     console.log(error);
     res.sendStatus(500);
   }
 })
+
+// Takes words from session, gets accronyms from API and checks them with the wordlist
+// Returns found words and the lists that made them
+router.get('/', async (req, res)=>{
+  const client = await pool.connect()
+  try {
+    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM user_acronyms where "user" = $1;`;
+    const results = await client.query(queryText, [req.session.user]);
+    await client.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
+    res.send(results.rows);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  } finally {
+    client.release()
+  }
+});
 
 // Deletes a word from the master word list
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {

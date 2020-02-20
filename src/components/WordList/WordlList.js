@@ -40,7 +40,7 @@ const WordList = (props) => {
         {
           favorited? 
           <Tooltip title="Remove from Favorites" placement="top">
-            <Favorite style={{fill: '#C70767'}}/>/> 
+            <Favorite style={{fill: '#C70767'}}/> 
           </Tooltip> :
           <Tooltip title="Add to Favorites" placement="top">
             <FavoriteBorder style={{fill: '#C70767'}}/>

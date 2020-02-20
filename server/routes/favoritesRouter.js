@@ -23,9 +23,9 @@ router.get('/', rejectUnauthenticated, (req,res) => {
 // Adds new favorites to DB
 router.post('/', rejectUnauthenticated, async (req,res) =>{
   const {
-    id: wordID,
+    word_id: wordID,
     wordLists
-   } = req.body[Object.keys(req.body)[0]];
+   } = req.body;
   const userID = req.session.passport.user;
   const queryText = `
     INSERT INTO "favorites" VALUES($1,$2,$3) 
@@ -54,7 +54,7 @@ router.post('/', rejectUnauthenticated, async (req,res) =>{
 router.delete('/', async (req,res) => {
   const {
     wordLists
-   } = req.body[Object.keys(req.body)[0]];
+   } = req.body;
    const userID = req.session.passport.user;
    const queryText = `
      DELETE FROM "favorites" WHERE "user_id" = $1 AND "word_list" = $2; 

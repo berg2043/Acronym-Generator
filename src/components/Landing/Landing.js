@@ -202,7 +202,7 @@ const Landing = () => {
       >
         {acronyms.map(acronym=>{
           return(
-            <Acronym acronym={acronym} key={acronym[Object.keys(acronym)[0]].id}/>
+            <Acronym acronym={acronym} key={acronym.word_id}/>
           )
         })}
       </List>
