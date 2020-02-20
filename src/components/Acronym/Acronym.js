@@ -31,13 +31,13 @@ const Acronym = (props) => {
   // Favorites all the word lists under the acronym
   function favoriteAll() {
     if(user.id){
-      if(all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length){
+      if(all || count === props.acronym.wordLists.length){
         dispatch({type: 'REMOVE_FAVORITE', payload: props.acronym});
         setCount(0)
         all===false? setAll(null) : setAll(false);
       } else {
         dispatch({type: 'ADD_FAVORITE', payload: props.acronym});
-        setCount(props.acronym[Object.keys(props.acronym)[0]].wordLists.length)
+        setCount(props.acronym.wordLists.length)
         setAll(true);
       }
     } else {
@@ -49,10 +49,9 @@ const Acronym = (props) => {
   function favoriteSingle(favoriteList, favoriteStatus){
     if(user.id){
       const acronymAndList = {
-        [Object.keys(props.acronym)[0]]: {
-          id: props.acronym[Object.keys(props.acronym)[0]].id,
-          wordLists: [favoriteList]
-        }
+        acronym: props.acronym.acronym,
+        word_id: props.acronym.word_id,
+        wordLists: [favoriteList]
       }
       if(favoriteStatus){
         dispatch({type: 'REMOVE_FAVORITE', payload: acronymAndList})
@@ -69,7 +68,7 @@ const Acronym = (props) => {
   return (
     <>
       <ListItem>
-        <ListItemText style={{color: 'white'}} primary={Object.keys(props.acronym)[0]} />
+        <ListItemText style={{color: 'white'}} primary={props.acronym.acronym} />
         <IconButton onClick={handleFlag}>
           {
             flagged? 
@@ -83,7 +82,7 @@ const Acronym = (props) => {
         </IconButton>
         <IconButton onClick={favoriteAll}>
           {
-            all || count === props.acronym[Object.keys(props.acronym)[0]].wordLists.length ?
+            all || count === props.acronym.wordLists.length ?
             <Tooltip title="Remove all from Favorites" placement="top">
               <Favorite style={{fill: '#C70767'}}/> 
             </Tooltip> :
@@ -98,7 +97,7 @@ const Acronym = (props) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {props.acronym[Object.keys(props.acronym)[0]].wordLists.map((list, i) => {
+          {props.acronym.wordLists.map((list, i) => {
             return (
               <WordList
                 favoriteSingle={favoriteSingle} 
