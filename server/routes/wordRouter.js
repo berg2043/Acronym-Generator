@@ -9,8 +9,8 @@ const router = express.Router();
 
 // Adds the words to session to be used in the GET request
 router.post('/', async (req, res) => {
-  let tempUser = Date.now()+Math.floor(Math.random()*100).toString()+'.json';
-  req.user = req.user || tempUser;
+  let tempUser = Date.now()+Math.floor(Math.random()*100).toString();
+  req.session.user = req.user || tempUser;
   req.session.words = req.session && req.session.words || [];
   req.session.words = req.body;
   console.log('getting syns', Date(Date.now()))
@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
     potentialAcronyms = await axios({
       method: 'POST',
       url: process.env.LAMBDA_API, 
-      data: {words: seedWord, fileName: req.user},
+      data: {words: seedWord, fileName: req.session.user+'.json'},
       maxContentLength: Infinity
     })
     console.log('back from db', Date(Date.now()))
@@ -56,24 +56,24 @@ router.post('/', async (req, res) => {
         holder.push(arrOfSyns[i].filter(word=>word[0]===row.word[i]))
       }
       finalResponse.push({
-        user: req.user,
-        acronym: [row.word],
+        user: req.session.user,
+        acronym: row.word,
         word_id: row.id,
-        wordLists: permute(holder, false)
+        wordLists: JSON.stringify(permute(holder, false)).replace(/\[/g, '{').replace(/]/g,'}')
       });
     }
     console.log('sending info', Date(Date.now()))
     const queryText = `
-        INSERT INTO user_acronyms ("user", "acronym", "word_id", "wordLists") (
+        INSERT INTO "user_acronyms" ("user", "acronym", "word_id", "wordLists") (
           SELECT
             (data->>'user')::text, (data->>'acronym')::text, (data->>'word_id')::int, (data->>'wordLists')::text[][]
           FROM (
             SELECT json_array_elements($1::json) AS data
           ) tmp
         );
-      `
-    pool.query(queryText, [JSON.stringify(finalResponse)])
-    res.send(500);
+      `;
+    await pool.query(queryText, [JSON.stringify(finalResponse)])
+    res.sendStatus(201);
   } catch (error){
     console.log(error);
     res.sendStatus(500);
@@ -83,8 +83,19 @@ router.post('/', async (req, res) => {
 // Takes words from session, gets accronyms from API and checks them with the wordlist
 // Returns found words and the lists that made them
 router.get('/', async (req, res)=>{
-  
-})
+  const client = await pool.connect()
+  try {
+    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM user_acronyms where "user" = $1;`;
+    const results = await client.query(queryText, [req.session.user]);
+    await client.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
+    res.send(results.rows);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  } finally {
+    client.release()
+  }
+});
 
 // Deletes a word from the master word list
 router.delete('/:id', rejectUnauthenticated, async (req, res) => {
