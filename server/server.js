@@ -28,6 +28,9 @@ app.use('/api/admin', adminRouter);
 
 // Static
 app.use(express.static('build'));
+app.get('*', function(req, res) {
+  res.sendFile('index.html', {root: 'build'});
+});
 
 // Spin Up
 app.listen(PORT, () => {
