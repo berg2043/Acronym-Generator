@@ -84,11 +84,13 @@ router.post('/', async (req, res) => {
 // Returns found words and the lists that made them
 router.get('/', async (req, res)=>{
   const client = await pool.connect()
+  console.log(req.session.user);
   try {
-    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM user_acronyms where "user" = $1;`;
+    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM "user_acronyms" WHERE "user" = $1 ORDER BY "acronym";`;
+    const count = await client.query(`SELECT COUNT(*) FROM "user_acronyms" WHERE "user" = $1;`, [req.session.user.toString()])
     const results = await client.query(queryText, [req.session.user]);
     await client.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
-    res.send(results.rows);
+    res.send({count: count.rows[0].count, results: results.rows});
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
