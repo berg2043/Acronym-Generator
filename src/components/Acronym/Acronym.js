@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { List, ListItem, ListItemText, Collapse, IconButton, Tooltip } from '@material-ui/core';
 import { ExpandLess, ExpandMore, Favorite, FavoriteBorder, FlagOutlined, Flag } from '@material-ui/icons/';
-import WordList from '../WordList/WordlList';
+import WordList from '../WordList/WordList';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Acronym = (props) => {
@@ -15,7 +15,7 @@ const Acronym = (props) => {
   const [count, setCount] = useState(0);
   const [flagged, setFlagged] = useState(false);
   
-  // Hadles the opening and closing of the word lists under the acronym
+  // Handles the opening and closing of the word lists under the acronym
   function handleClick() {
     setOpen(!open);
   }

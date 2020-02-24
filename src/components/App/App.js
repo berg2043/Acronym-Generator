@@ -23,6 +23,7 @@ function App() {
         <Route path='/' component={Nav}/>
         <Switch>
           <Route exact path='/' component={Landing} />
+          <Route exact path='/results/:page' component={Landing} />
           <Route exact path='/register' component={Register} />
           <ProtectedRoute exact path='/favorites' component={Favorites}/>
           <Route exact path='/login' component={LogIn} />

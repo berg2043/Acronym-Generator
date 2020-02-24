@@ -1,8 +1,8 @@
 import React, { useState, useReducer } from 'react';
-import { TextField, Button, makeStyles, List, ListSubheader, Tooltip } from '@material-ui/core';
+import { TextField, Button, makeStyles, Tooltip } from '@material-ui/core';
 import Axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import Acronym from '../Acronym/Acronym';
+import { useHistory, useParams } from 'react-router-dom';
+import Results from '../Results/Results';
 
 // Sets up material ui classes
 const useStyles = makeStyles(theme => ({
@@ -33,9 +33,9 @@ const Landing = () => {
   // Adds material ui classes
   const classes = useStyles();
 
-  // Connects to redux
-  const dispatch = useDispatch();
-  const acronyms = useSelector(state => state.acronyms)
+  // Navigation
+  const history = useHistory();
+  const params = useParams();
 
   // Default State
   const [inputCount, setInputCount] = useState(1);
@@ -133,8 +133,8 @@ const Landing = () => {
   // Brings all the previous input functionality together in a react reducer
   const [inputs, setInputs] = useReducer(inputFunction, initialInput);
 
-  // Sends the words in the inputs to the server to be stored in session
-  // Then calls server for accronyms and word lists
+  // Calls server to get all the acronyms from the cloud and then posts them to
+  // the local PostgrSQL server in order to easily do server side pagination
   function submitForm(event){
     event.preventDefault();
     const arr = [];
@@ -142,8 +142,7 @@ const Landing = () => {
       return arr.push(inputs[key][2])
     })
     Axios.post('/api/words/', arr).then((response)=>{
-      // Will get tossed into a saga at some point
-      dispatch({type: 'GET_ACRONYMS'})
+      history.push('/results/1')
     }).catch(err=>{
       console.log(err);
     })
@@ -191,21 +190,7 @@ const Landing = () => {
           Submit
         </Button>
       </form>
-      <List
-        component='nav'
-        subheader={
-          <ListSubheader component='div' style={{backgroundColor: 'black'}}>
-            Acronyms
-          </ListSubheader>
-        }
-        className={classes.root}
-      >
-        {acronyms.map(acronym=>{
-          return(
-            <Acronym acronym={acronym} key={acronym.word_id}/>
-          )
-        })}
-      </List>
+      {Object.keys(params).length > 0? <Results/> : null}
     </>
   );
 };

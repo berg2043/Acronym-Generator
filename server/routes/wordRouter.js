@@ -18,14 +18,15 @@ router.post('/', async (req, res) => {
     return `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.THESAURUS_KEY}`;
   })
   try {
+    await pool.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
     const response = await axios.all(linksArr.map(link => axios.get(link)))
     let arrOfResponses = response.map(r => r.data);
     const arrOfSyns = [];
     for (let i=0;  i < arrOfResponses.length; i++) {
       if(arrOfResponses[i][0].meta){
         let wordAndSyns = [arrOfResponses[i][0].meta.id];
-        for (let lexicalCategoires of arrOfResponses[i]) {
-          wordAndSyns = wordAndSyns.concat(lexicalCategoires.meta.syns[0]);
+        for (let lexicalCategories of arrOfResponses[i]) {
+          wordAndSyns = wordAndSyns.concat(lexicalCategories.meta.syns[0]);
         }
         arrOfSyns.push(wordAndSyns);
       } else {
@@ -80,15 +81,21 @@ router.post('/', async (req, res) => {
   }
 })
 
-// Takes words from session, gets accronyms from API and checks them with the wordlist
+// Takes words from session, gets acronyms from API and checks them with the wordList
 // Returns found words and the lists that made them
-router.get('/', async (req, res)=>{
+router.get('/:page', async (req, res)=>{
   const client = await pool.connect()
+  console.log(req.session.user);
   try {
-    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM user_acronyms where "user" = $1;`;
-    const results = await client.query(queryText, [req.session.user]);
-    await client.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
-    res.send(results.rows);
+    const offset = Number(req.params.page) * 10
+    const queryText = `
+        SELECT "word_id", "acronym", "wordLists" 
+        FROM "user_acronyms" WHERE "user" = $1 
+        ORDER BY "acronym" 
+        LIMIT 10 OFFSET $2`;
+    const count = await client.query(`SELECT COUNT(*) FROM "user_acronyms" WHERE "user" = $1;`, [req.session.user.toString()])
+    const results = await client.query(queryText, [req.session.user, offset]);
+    res.send({count: count.rows[0].count, results: results.rows});
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
