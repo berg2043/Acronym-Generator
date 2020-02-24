@@ -22,7 +22,7 @@ const WordList = (props) => {
   // Default state
   const [favorited, setFavorited] = useState(false);
   
-  // Favortites this word list if the parrent acronym is favorited
+  // Favorites this word list if the parent acronym is favorited
   useEffect(()=>{
     setFavorited(props.all);
   },[props.all])
