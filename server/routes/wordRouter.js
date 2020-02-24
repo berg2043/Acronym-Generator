@@ -18,6 +18,7 @@ router.post('/', async (req, res) => {
     return `https://www.dictionaryapi.com/api/v3/references/thesaurus/json/${word}?key=${process.env.THESAURUS_KEY}`;
   })
   try {
+    await pool.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
     const response = await axios.all(linksArr.map(link => axios.get(link)))
     let arrOfResponses = response.map(r => r.data);
     const arrOfSyns = [];
@@ -80,7 +81,7 @@ router.post('/', async (req, res) => {
   }
 })
 
-// Takes words from session, gets accronyms from API and checks them with the wordlist
+// Takes words from session, gets acronyms from API and checks them with the wordlist
 // Returns found words and the lists that made them
 router.get('/', async (req, res)=>{
   const client = await pool.connect()
@@ -89,7 +90,6 @@ router.get('/', async (req, res)=>{
     const queryText = `SELECT "word_id", "acronym", "wordLists" FROM "user_acronyms" WHERE "user" = $1 ORDER BY "acronym";`;
     const count = await client.query(`SELECT COUNT(*) FROM "user_acronyms" WHERE "user" = $1;`, [req.session.user.toString()])
     const results = await client.query(queryText, [req.session.user]);
-    await client.query('DELETE FROM "user_acronyms" WHERE "user" = $1;',[req.session.user]);
     res.send({count: count.rows[0].count, results: results.rows});
   } catch (error) {
     console.log(error);
