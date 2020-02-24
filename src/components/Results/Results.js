@@ -6,7 +6,7 @@ const Results = (props) => {
   const params = useParams();
   const dispatch = useCallback(useDispatch());
   useEffect(()=>{
-    dispatch({type: 'GET_ACRONYMS'});
+    dispatch({type: 'GET_ACRONYMS', payload: params.page});
   },[params.page, dispatch])
   return(
     <div>
