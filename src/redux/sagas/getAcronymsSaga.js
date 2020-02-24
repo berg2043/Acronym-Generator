@@ -4,7 +4,7 @@ import { put, takeLatest } from "redux-saga/effects";
 // Gets all the acronyms after the words have been stored in a session
 function* getAcronyms(action){
   try {
-    const response = yield Axios.get('/api/words/');
+    const response = yield Axios.get('/api/words/'+action.payload);
     yield put({type: "SET_ACRONYMS", payload: response.data.results})
     yield put({type: "COUNT", payload: response.data.count})
   } catch (error) {
