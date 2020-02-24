@@ -102,7 +102,7 @@ const Nav = () =>{
             }
           </Menu>
           <h1 className={classes.title}>
-            Acronym Generator
+            SNAPS (Spawning Nice Acronyms for People with Style)
           </h1>
           {
             user.id?
