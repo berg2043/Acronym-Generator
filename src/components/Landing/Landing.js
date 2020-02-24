@@ -153,7 +153,7 @@ const Landing = () => {
       <p style={{color: 'white', maxWidth: 800, margin: 'auto', marginTop: 8}}>
         Write words describing the process, product, etc that you would like an
         acronym for.  Press the + button to add more fields and the X button to 
-        remove that field (minimum two fields).  Press submit to get your acronym.  
+        remove that field (minimum two fields, maximum seven fields).  Press submit to get your acronym.  
         If it takes longer than 30 seconds to get an acronym, the server has crashed.
       </p>
       { 
