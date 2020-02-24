@@ -83,13 +83,18 @@ router.post('/', async (req, res) => {
 
 // Takes words from session, gets acronyms from API and checks them with the wordlist
 // Returns found words and the lists that made them
-router.get('/', async (req, res)=>{
+router.get('/:page', async (req, res)=>{
   const client = await pool.connect()
   console.log(req.session.user);
   try {
-    const queryText = `SELECT "word_id", "acronym", "wordLists" FROM "user_acronyms" WHERE "user" = $1 ORDER BY "acronym";`;
+    const offset = Number(req.params.page) * 10
+    const queryText = `
+        SELECT "word_id", "acronym", "wordLists" 
+        FROM "user_acronyms" WHERE "user" = $1 
+        ORDER BY "acronym" 
+        LIMIT 10 OFFSET $2`;
     const count = await client.query(`SELECT COUNT(*) FROM "user_acronyms" WHERE "user" = $1;`, [req.session.user.toString()])
-    const results = await client.query(queryText, [req.session.user]);
+    const results = await client.query(queryText, [req.session.user, offset]);
     res.send({count: count.rows[0].count, results: results.rows});
   } catch (error) {
     console.log(error);
