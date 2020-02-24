@@ -14,16 +14,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Results = () => {
+  // Adds material ui classes
   const classes = useStyles();
+
+  // Navigation
   const params = useParams();
+
+  // Connects to redux
   const dispatch = useCallback(useDispatch());
   const acronyms = useSelector(state => state.acronyms);
   const count = useSelector(state => state.count);
+
+  // Default state
   const [pages, setPages] = useState([]);
   useEffect(() => {
     dispatch({ type: 'GET_ACRONYMS', payload: +params.page - 1 });
   }, [params.page, dispatch]);
 
+  // Creates an arrow of numbers 1 to the number of pages to create the navigation
+  // at bottom of the page
   useEffect(() => {
     const pageArr = [];
     for (let i = 0; i < count / 10; i++) {
