@@ -28,7 +28,7 @@ const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
-  // Adds histroy for progromatic routing
+  // Adds history for programmatic routing
   const history = useHistory();
 
   // Pushes user to the landing page after they get logged in from registering
