@@ -156,20 +156,24 @@ const Landing = () => {
         remove that field (minimum two fields).  Press submit to get your acronym.  
         If it takes longer than 30 seconds to get an acronym, the server has crashed.
       </p>
-      <Tooltip title="Add" placement="top">
-        <Button 
-          variant="contained" 
-          onClick={()=>{
-            setInputCount(inputCount+1);
-            setCurrentCount(currentCount+1);
-            setInputs({type: 'add_input'})
-          }}
-          className={classes.buttons}
-          color='secondary'
-        >
-          +
-        </Button>
-      </Tooltip>
+      { 
+        currentCount<7?
+          <Tooltip title="Add" placement="top">
+            <Button 
+              variant="contained" 
+              onClick={()=>{
+                setInputCount(inputCount+1);
+                setCurrentCount(currentCount+1);
+                setInputs({type: 'add_input'})
+              }}
+              className={classes.buttons}
+              color='secondary'
+            >
+              +
+            </Button>
+          </Tooltip>:
+          null
+      }
       <br/>
       <form onSubmit={(event)=>submitForm(event)}>
         {Object.entries(inputs).map(([key,val])=>{
