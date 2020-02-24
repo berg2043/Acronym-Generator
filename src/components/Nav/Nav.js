@@ -44,8 +44,8 @@ const Nav = () =>{
     }
   }
 
-  
   const history = useHistory();
+  
   return(
     <nav>
       <AppBar position='static'>
