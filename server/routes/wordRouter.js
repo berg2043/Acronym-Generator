@@ -25,8 +25,8 @@ router.post('/', async (req, res) => {
     for (let i=0;  i < arrOfResponses.length; i++) {
       if(arrOfResponses[i][0].meta){
         let wordAndSyns = [arrOfResponses[i][0].meta.id];
-        for (let lexicalCategoires of arrOfResponses[i]) {
-          wordAndSyns = wordAndSyns.concat(lexicalCategoires.meta.syns[0]);
+        for (let lexicalCategories of arrOfResponses[i]) {
+          wordAndSyns = wordAndSyns.concat(lexicalCategories.meta.syns[0]);
         }
         arrOfSyns.push(wordAndSyns);
       } else {
@@ -81,7 +81,7 @@ router.post('/', async (req, res) => {
   }
 })
 
-// Takes words from session, gets acronyms from API and checks them with the wordlist
+// Takes words from session, gets acronyms from API and checks them with the wordList
 // Returns found words and the lists that made them
 router.get('/:page', async (req, res)=>{
   const client = await pool.connect()
