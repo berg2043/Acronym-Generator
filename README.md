@@ -1,10 +1,10 @@
 # SNAPS (Spawning Nice Acronyms for People with Style)
 
-## Descriptipon
-_Durration: 2 weeks_
+## Description
+_Duration: 2 weeks_
 
 ## Description
-This is an acronym genertaor. A user inputs words to describe something, and the 
+This is an acronym generator. A user inputs words to describe something, and the 
 app takes those words and synonyms of those words and combine them to create 
 acronyms that are also words.  Users can browse these acronyms and word lists.  
 If they log in, they can choose their favorite acronyms and word lists to be 
@@ -20,14 +20,14 @@ saved to their profile.  They can also flag acronyms that they don't believe are
 ## Installation
 
 1. Run npm install
-2. Create a database called `acronym` on your local postgres server. Update
-`server\modules\pool.js` as needed for username and password of your postgres server
+2. Create a database called `acronym` on your local postgreSQL server. Update
+`server\modules\pool.js` as needed for username and password of your postgreSQL server
 3. Run the SQL commands found in `database.sql`
 3. Run `npm run build` to build a local react app
 4. Run `npm run server` to run the server.
 5. Go to `localhost:5000` 
 
-An online version of this app is available soon.
+An online version of this app is available [here](https://snaps-acronym-generator.herokuapp.com/).
 
 ## Usage
 
@@ -41,10 +41,10 @@ Pressing the down caret will display lists of words that make up the acronym.
 Pressing heart will favorite an acronym or word list if the user is logged in or
 prompt the user to log in.
 
-Pressing the flag will send the word to be reviewd by the admin to see if it is a
+Pressing the flag will send the word to be reviewed by the admin to see if it is a
 real word or not.
 
-Users are able to review thier favorites to remove or edit the words there.
+Users are able to review their favorites to remove or edit the words there.
 
 ## Built With
 
@@ -59,8 +59,8 @@ Javascript
 * bcrypt
 
 SQL
-* postgres
-* pgadmin 4
+* postgreSQL
+* pgAdmin 4
 
 AWS
 * Lambda
@@ -68,8 +68,7 @@ AWS
 * Redshift
 
 ## Known bugs
-* With longer acronyms, the browser will be under heavy load and may crash.  Pagination
-is currently being worked on to reduce the amount of data stored on the browser.
+* There is no current error handling, so users will not be notified if there are any login/registration errors.
 
 ## Support
 
