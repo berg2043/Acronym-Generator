@@ -12,9 +12,13 @@ import './index.css';
 
 const sagaMiddleware = createSagaMiddleware();
 
+const middlewareList = process.env.NODE_ENV === 'development' ?
+  [sagaMiddleware, logger] :
+  [sagaMiddleware];
+
 const store = createStore(
   reducers,
-  applyMiddleware(sagaMiddleware,logger)
+  applyMiddleware(...middlewareList)
 )
 
 sagaMiddleware.run(sagas)
