@@ -3,6 +3,8 @@ import { TextField, Button, makeStyles, List, ListSubheader, Tooltip } from '@ma
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import Acronym from '../Acronym/Acronym';
+import { useHistory } from 'react-router-dom';
+import Results from '../Results/Results';
 
 // Sets up material ui classes
 const useStyles = makeStyles(theme => ({
@@ -37,6 +39,9 @@ const Landing = () => {
   const dispatch = useDispatch();
   const acronyms = useSelector(state => state.acronyms)
 
+  // Navigation
+  const history = useHistory();
+  
   // Default State
   const [inputCount, setInputCount] = useState(1);
   const [currentCount, setCurrentCount] = useState(2);
@@ -143,7 +148,8 @@ const Landing = () => {
     })
     Axios.post('/api/words/', arr).then((response)=>{
       // Will get tossed into a saga at some point
-      dispatch({type: 'GET_ACRONYMS'})
+      // dispatch({type: 'GET_ACRONYMS'})
+      history.push('/results/0')
     }).catch(err=>{
       console.log(err);
     })
@@ -191,6 +197,7 @@ const Landing = () => {
           Submit
         </Button>
       </form>
+      <Results/>
       <List
         component='nav'
         subheader={
